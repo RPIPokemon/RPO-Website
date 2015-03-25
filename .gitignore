@@ -1,0 +1,12 @@
+# Zed
+.zedstate
+
+# node
+*.log
+node_modules/
+
+# bower
+bower_components/
+
+# Build
+target/
