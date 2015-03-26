@@ -1,11 +1,15 @@
-@import url('http://fonts.googleapis.com/css?family=Raleway:400,300')
-@require 'bootstrap/dist/css/bootstrap.css'
-@require 'font-awesome/css/font-awesome.css'
+@require variables
+@require nib
+@require raleway
+@require bootstrap
 
-@font-face
-    font-family 'FontAwesome'
-    src url('fonts/fontawesome-webfont.eot')
-    src url('fonts/fontawesome-webfont.woff2')
-    src url('fonts/fontawesome-webfont.woff')
-    src url('fonts/fontawesome-webfont.ttf')
-    src url('fonts/fontawesome-webfont.svg')
+// angular-parallax
+.background
+    position relative
+    background-attachment fixed
+    background-position 50% 0
+    background-repeat no-repeat
+
+.home-background
+    height calc(100vh - 50px)
+    background-image url('img/rpi_photo.jpg')

@@ -1,0 +1,23 @@
+// Bootstrap theming and imports
+$brand-primary ?= RPO_light_blue
+$brand-success ?= RPO_green
+$font-family-sans-serif ?= Raleway
+$navbar-default-bg ?= RPO_white
+@require 'bootstrap-stylus/bootstrap'
+
+// FontAwesome imports
+@require 'font-awesome/css/font-awesome.css'
+@font-face
+    font-family 'FontAwesome'
+    src url('fonts/fontawesome-webfont.eot')
+    src url('fonts/fontawesome-webfont.woff2')
+    src url('fonts/fontawesome-webfont.woff')
+    src url('fonts/fontawesome-webfont.ttf')
+    src url('fonts/fontawesome-webfont.svg')
+
+// Bootstrap fixes
+body
+    padding-top 50px
+
+.nav, .pagination, .carousel, .panel-title a
+    cursor pointer

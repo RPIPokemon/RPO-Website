@@ -2,47 +2,49 @@ module.exports = (grunt) ->
     grunt.initConfig
         pkg: grunt.file.readJSON 'package.json'
         browserify:
-            dist:
+            target:
                 files:
                     'target/app.js': ['src/scripts/app.coffee']
                 options:
                     transform: ['coffeeify', 'debowerify', 'browserify-plain-jade']
                     browserifyOptions:
                         extensions: ['.coffee']
-                        
+
         coffeelint:
-            dist: ['src/scripts/**/*.coffee']
+            target: ['src/scripts/**/*.coffee']
             options:
                 max_line_length:
                     level: 'ignore'
                 indentation:
                     level: 'ignore'
-                    
+
         stylus:
-            dist:
+            target:
                 files:
                     'target/app.css': 'src/styles/app.styl'
                 options:
                     paths: ['bower_components', 'node_modules', 'src/styles']
                     'include css': yes
-                    
+
         jade:
-            dist:
+            target:
                 files:
                     'target/index.html': 'src/templates/app.jade'
-                    
+
         uglify:
-            dist:
+            target:
                 files:
                     'target/app.js': ['target/app.js']
                 options:
                     mangle: no
-                    
+
         cssmin:
-            dist:
+            target:
                 files:
                     'target/app.css': ['target/app.css']
-                    
+                options:
+                    keepSpecialComments: 0
+
         copy:
             src:
                 files: [
@@ -53,7 +55,7 @@ module.exports = (grunt) ->
                         dest: 'target/'
                     }
                 ]
-                
+
             fa:
                 files: [
                     {
@@ -63,17 +65,17 @@ module.exports = (grunt) ->
                         dest: 'target/'
                     }
                 ]
-                
+
         clean:
-            dist: ['target/*.*']
-            
+            target: ['target/*.*']
+
         connect:
-            server:
+            target:
                 options:
                     base: 'target'
                     keepalive: yes
-            
-            
+
+
     grunt.loadNpmTasks 'grunt-browserify'
     grunt.loadNpmTasks 'grunt-coffeelint'
     grunt.loadNpmTasks 'grunt-contrib-jade'
@@ -83,9 +85,9 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-copy'
     grunt.loadNpmTasks 'grunt-contrib-clean'
     grunt.loadNpmTasks 'grunt-contrib-connect'
-    
+
     grunt.registerTask 'build', ['coffeelint', 'clean', 'browserify', 'stylus', 'jade']
     grunt.registerTask 'minify', ['uglify', 'cssmin']
     grunt.registerTask 'default', ['build', 'minify', 'copy']
-    
+
     return
