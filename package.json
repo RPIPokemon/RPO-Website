@@ -18,6 +18,7 @@
     "grunt-contrib-jade": "^0.14.1",
     "grunt-contrib-stylus": "^0.21.0",
     "grunt-contrib-uglify": "^0.8.0",
-    "grunt-contrib-watch": "^0.6.1"
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-ftp-push": "^0.3.2"
   }
 }

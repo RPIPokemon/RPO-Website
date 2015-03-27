@@ -11,7 +11,7 @@ module.exports = (grunt) ->
         browserify:
             dist:
                 files:
-                    'target/app.js': ['src/scripts/app.coffee']
+                    'target/public_html/app.js': ['src/scripts/app.coffee']
                 options:
                     transform: ['coffeeify', 'debowerify', 'browserify-plain-jade']
                     browserifyOptions:
@@ -19,18 +19,20 @@ module.exports = (grunt) ->
 
             debug:
                 files:
-                    'target/app.js': ['src/scripts/app.coffee']
+                    'target/public_html/app.js': ['src/scripts/app.coffee']
                 options:
                     transform: ['coffeeify', 'browserify-plain-jade']
                     external: dependencies
                     browserifyOptions:
                         extensions: ['.coffee']
+                        debug: true
 
             libs:
-                dest: 'target/libs.js'
+                dest: 'target/public_html/libs.js'
                 src: []
                 options:
                     require: dependencies
+                    debug: true
 
         coffeelint:
             dist: ['src/scripts/**/*.coffee']
@@ -43,23 +45,32 @@ module.exports = (grunt) ->
         stylus:
             dist:
                 files:
-                    'target/app.css': 'src/styles/app.styl'
+                    'target/public_html/app.css': 'src/styles/app.styl'
+                options:
+                    paths: ['bower_components', 'node_modules', 'src/styles']
+                    'include css': yes
+
+            debug:
+                files:
+                    'target/public_html/app.css': 'src/styles/app.styl'
                 options:
                     paths: ['bower_components', 'node_modules', 'src/styles']
                     compress: no
                     'include css': yes
+                    sourcemap:
+                        inline: yes
 
         jade:
             dist:
                 files:
-                    'target/index.html': 'src/templates/app.jade'
+                    'target/public_html/index.html': 'src/templates/app.jade'
                 options:
                     data:
                         debug: no
 
             debug:
                 files:
-                    'target/index.html': 'src/templates/app.jade'
+                    'target/public_html/index.html': 'src/templates/app.jade'
                 options:
                     data:
                         debug: yes
@@ -67,14 +78,14 @@ module.exports = (grunt) ->
         uglify:
             dist:
                 files:
-                    'target/app.js': ['target/app.js']
+                    'target/public_html/app.js': ['target/public_html/app.js']
                 options:
                     mangle: no
 
         cssmin:
             dist:
                 files:
-                    'target/app.css': ['target/app.css']
+                    'target/public_html/app.css': ['target/public_html/app.css']
                 options:
                     keepSpecialComments: 0
 
@@ -85,7 +96,7 @@ module.exports = (grunt) ->
                         expand: yes
                         cwd: 'resources'
                         src: ['**']
-                        dest: 'target/'
+                        dest: 'target/public_html/'
                     }
                 ]
 
@@ -95,22 +106,23 @@ module.exports = (grunt) ->
                         expand: yes
                         cwd: 'bower_components/font-awesome'
                         src: ['fonts/**']
-                        dest: 'target/'
+                        dest: 'target/public_html/'
                     }
                 ]
 
         clean:
-            target: ['target/*.*']
+            target: ['target/public_html/*.*']
 
         connect:
             serve:
                 options:
-                    base: 'target'
+                    base: 'target/public_html'
                     keepalive: yes
+                    livereload: no
 
             debug:
                 options:
-                    base: 'target'
+                    base: 'target/public_html'
                     livereload: yes
 
         watch:
@@ -133,7 +145,21 @@ module.exports = (grunt) ->
             options:
                 livereload: true
 
+        ftp_push:
+            deploy:
+                files: [
+                    {
+                        expand: yes
+                        cwd: 'target'
+                        src: ['public_html/**']
+                    }
+                ]
 
+                options:
+                    host: process.env.FTP_HOST
+                    dest: '/'
+                    username: process.env.FTP_USERNAME
+                    password: process.env.FTP_PASSWORD
 
     grunt.loadNpmTasks 'grunt-browserify'
     grunt.loadNpmTasks 'grunt-coffeelint'
@@ -145,6 +171,7 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-clean'
     grunt.loadNpmTasks 'grunt-contrib-connect'
     grunt.loadNpmTasks 'grunt-contrib-watch'
+    grunt.loadNpmTasks 'grunt-ftp-push'
 
     grunt.registerTask 'build', ['coffeelint', 'clean', 'browserify:dist', 'stylus', 'jade:dist']
     grunt.registerTask 'livereload', ['clean', 'copy', 'browserify:libs', 'browserify:debug', 'jade:debug', 'stylus', 'connect:debug', 'watch']
