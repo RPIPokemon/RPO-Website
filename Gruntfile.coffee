@@ -173,8 +173,8 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-watch'
     grunt.loadNpmTasks 'grunt-ftp-push'
 
-    grunt.registerTask 'build', ['coffeelint', 'clean', 'browserify:dist', 'stylus', 'jade:dist']
-    grunt.registerTask 'livereload', ['clean', 'copy', 'browserify:libs', 'browserify:debug', 'jade:debug', 'stylus', 'connect:debug', 'watch']
+    grunt.registerTask 'build', ['coffeelint', 'clean', 'browserify:dist', 'stylus:dist', 'jade:dist']
+    grunt.registerTask 'livereload', ['clean', 'copy', 'browserify:libs', 'browserify:debug', 'jade:debug', 'stylus:debug', 'connect:debug', 'watch']
     grunt.registerTask 'minify', ['uglify', 'cssmin']
     grunt.registerTask 'default', ['build', 'minify', 'copy']
 
