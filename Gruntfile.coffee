@@ -5,6 +5,11 @@ dependencies = [
     './bower_components/angular-ui-router/release/angular-ui-router.js:angular-ui-router'
 ]
 
+css_depenencies = [
+    './src/styles/bootstrap.styl'
+    './src/styles/raleway.styl'
+]
+
 module.exports = (grunt) ->
     grunt.initConfig
         pkg: grunt.file.readJSON 'package.json'
@@ -47,12 +52,26 @@ module.exports = (grunt) ->
                 files:
                     'target/public_html/app.css': 'src/styles/app.styl'
                 options:
+                    define:
+                        debug: no
                     paths: ['bower_components', 'node_modules', 'src/styles']
                     'include css': yes
 
             debug:
                 files:
                     'target/public_html/app.css': 'src/styles/app.styl'
+                options:
+                    define:
+                        debug: yes
+                    paths: ['bower_components', 'node_modules', 'src/styles']
+                    compress: no
+                    'include css': yes
+                    sourcemap:
+                        inline: yes
+
+            libs:
+                dest: 'target/public_html/libs.css'
+                src: css_depenencies
                 options:
                     paths: ['bower_components', 'node_modules', 'src/styles']
                     compress: no
@@ -111,7 +130,7 @@ module.exports = (grunt) ->
                 ]
 
         clean:
-            target: ['target/public_html/*.*']
+            target: ['target/public_html/*']
 
         connect:
             serve:
@@ -136,7 +155,11 @@ module.exports = (grunt) ->
 
             stylus:
                 files: ['src/styles/**/*.styl']
-                tasks: ['stylus']
+                tasks: ['stylus:debug']
+
+            stylus_libs:
+                files: css_depenencies
+                tasks: ['stylus:libs']
 
             coffee:
                 files: ['src/scripts/**/*.coffee']
@@ -173,8 +196,11 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-watch'
     grunt.loadNpmTasks 'grunt-ftp-push'
 
+    grunt.registerTask 'debug:prepare', ['clean', 'copy', 'browserify:libs', 'stylus:libs']
+    grunt.registerTask 'debug:build', ['browserify:debug', 'jade:debug', 'stylus:debug']
+    grunt.registerTask 'livereload', ['debug:prepare', 'debug:build', 'connect:debug', 'watch']
+
     grunt.registerTask 'build', ['coffeelint', 'clean', 'browserify:dist', 'stylus:dist', 'jade:dist']
-    grunt.registerTask 'livereload', ['clean', 'copy', 'browserify:libs', 'browserify:debug', 'jade:debug', 'stylus:debug', 'connect:debug', 'watch']
     grunt.registerTask 'minify', ['uglify', 'cssmin']
     grunt.registerTask 'default', ['build', 'minify', 'copy']
 

@@ -4,12 +4,13 @@ html
         meta(charset='utf-8')
         meta(name='viewport' content='initial-scale=1, width=device-width')
         title Rensselaer Pokemon
-        
+
         if debug
+            link(href='libs.css' rel='stylesheet')
             script(src='libs.js')
-        
+
         link(href='app.css' rel='stylesheet')
         script(src='app.js')
-        
+
     body(ng-app='RPO')
         div(ui-view)

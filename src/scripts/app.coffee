@@ -15,6 +15,19 @@ angular.module 'RPO', ['RPO.controllers'
 .config ($stateProvider, $urlRouterProvider) ->
     $stateProvider.state 'home',
         url: '/home'
-        template: require '../templates/home.jade'
+        template: require '../templates/home/layout.jade'
+        abstract: yes
+
+    .state 'home.index',
+        url: ''
+        views:
+            content:
+                template: require '../templates/home/home.jade'
+
+    .state 'home.blog',
+        url: '/blog'
+        views:
+            content:
+                template: 'LOL'
 
     $urlRouterProvider.otherwise 'home'
