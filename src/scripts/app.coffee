@@ -28,6 +28,6 @@ angular.module 'RPO', ['RPO.controllers'
         url: '/blog'
         views:
             content:
-                template: 'LOL'
+                template: '<p>Future Blog!</p>'
 
     $urlRouterProvider.otherwise 'home'

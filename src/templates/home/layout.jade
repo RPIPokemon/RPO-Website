@@ -5,14 +5,14 @@ div(ui-view='navbar')
                 button.navbar-toggle(ng-init='navbarCollapsed=true', ng-click='navbarCollapsed = !navbarCollapsed')
                     i.fa.fa-lg.fa-bars
     
-                a.navbar-brand(ui-sref='home.index') RPO
+                a.navbar-brand(ui-sref='home.index', ng-click='navbarCollapsed=true') RPO
                 
             .collapse.navbar-collapse(collapse='navbarCollapsed')
                 ul.nav.navbar-nav
                     li        
-                        a(ui-sref='home.blog') Blog
+                        a(ui-sref='home.blog', ng-click='navbarCollapsed=true') Blog
                     li
-                        a(ui-sref='home.index') Link
+                        a(ui-sref='home.index', ng-click='navbarCollapsed=true') Link
                         
 div(ui-view='content')
     
