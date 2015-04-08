@@ -30,4 +30,8 @@ angular.module 'RPO', ['RPO.controllers'
             content:
                 template: '<p>Future Blog!</p>'
 
+    .state 'app',
+        url: '/app'
+        template: '<p>HELLO</p>'
+
     $urlRouterProvider.otherwise 'home'

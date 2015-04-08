@@ -8,11 +8,12 @@ div(ui-view='navbar')
                 a.navbar-brand(ui-sref='home.index', ng-click='navbarCollapsed=true') RPO
                 
             .collapse.navbar-collapse(collapse='navbarCollapsed')
-                ul.nav.navbar-nav
-                    li        
-                        a(ui-sref='home.blog', ng-click='navbarCollapsed=true') Blog
-                    li
-                        a(ui-sref='home.index', ng-click='navbarCollapsed=true') Link
+                div(ui-view='navbar-buttons')
+                    ul.nav.navbar-nav
+                        li        
+                            a(ui-sref='home.blog', ng-click='navbarCollapsed=true') Blog
+                        li
+                            a(ui-sref='app', ng-click='navbarCollapsed=true') Link
                         
-div(ui-view='content')
+.home-wrapper(ui-view='content')
     

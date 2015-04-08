@@ -18,9 +18,12 @@ $navbar-default-bg ?= RPO_white
     src url('fonts/fontawesome-webfont.ttf')
     src url('fonts/fontawesome-webfont.svg')
 
-// Bootstrap fixes
-body
-    padding-top 50px
+.home-wrapper
+    @media screen and (min-width: $screen-sm-min)
+        padding-top 50px
+
+    @media screen and (max-width: $screen-sm-min)
+        padding-top 56px
 
 .nav, .pagination, .carousel, .panel-title a
     cursor pointer
