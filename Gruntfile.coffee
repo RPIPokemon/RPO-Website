@@ -1,4 +1,4 @@
-dependencies = [
+js_dependencies = [
     './bower_components/angular/angular.js:angular'
     './bower_components/angular-bootstrap/ui-bootstrap-tpls.js:angular-bootstrap'
     './bower_components/angular-parallax/scripts/angular-parallax.js:angular-parallax'
@@ -13,10 +13,14 @@ css_depenencies = [
 module.exports = (grunt) ->
     grunt.initConfig
         pkg: grunt.file.readJSON 'package.json'
+        src_dir: 'src'
+        target_dir: 'target/public_html'
+        gitinfo: {}
+
         browserify:
             dist:
                 files:
-                    'target/public_html/app.js': ['src/scripts/app.coffee']
+                    '<%= target_dir %>/app.js': ['<%= src_dir %>/scripts/app.coffee']
                 options:
                     transform: ['coffeeify', 'debowerify', 'browserify-plain-jade']
                     browserifyOptions:
@@ -24,23 +28,24 @@ module.exports = (grunt) ->
 
             debug:
                 files:
-                    'target/public_html/app.js': ['src/scripts/app.coffee']
+                    '<%= target_dir %>/app.js': ['<%= src_dir %>/scripts/app.coffee']
                 options:
                     transform: ['coffeeify', 'browserify-plain-jade']
-                    external: dependencies
+                    external: js_dependencies
                     browserifyOptions:
                         extensions: ['.coffee']
                         debug: true
 
             libs:
-                dest: 'target/public_html/libs.js'
+                dest: '<%= target_dir %>/libs.js'
                 src: []
                 options:
-                    require: dependencies
-                    debug: true
+                    require: js_dependencies
+                    browserifyOptions:
+                        debug: true
 
         coffeelint:
-            dist: ['src/scripts/**/*.coffee']
+            dist: ['<%= src_dir %>/scripts/**/*.coffee']
             options:
                 max_line_length:
                     level: 'ignore'
@@ -50,30 +55,30 @@ module.exports = (grunt) ->
         stylus:
             dist:
                 files:
-                    'target/public_html/app.css': 'src/styles/app.styl'
+                    '<%= target_dir %>/app.css': '<%= src_dir %>/styles/app.styl'
                 options:
                     define:
                         debug: no
-                    paths: ['bower_components', 'node_modules', 'src/styles']
+                    paths: ['bower_components', 'node_modules', '<%= src_dir %>/styles']
                     'include css': yes
 
             debug:
                 files:
-                    'target/public_html/app.css': 'src/styles/app.styl'
+                    '<%= target_dir %>/app.css': '<%= src_dir %>/styles/app.styl'
                 options:
                     define:
                         debug: yes
-                    paths: ['bower_components', 'node_modules', 'src/styles']
+                    paths: ['bower_components', 'node_modules', '<%= src_dir %>/styles']
                     compress: no
                     'include css': yes
                     sourcemap:
                         inline: yes
 
             libs:
-                dest: 'target/public_html/libs.css'
+                dest: '<%= target_dir %>/libs.css'
                 src: css_depenencies
                 options:
-                    paths: ['bower_components', 'node_modules', 'src/styles']
+                    paths: ['bower_components', 'node_modules', '<%= src_dir %>/styles']
                     compress: no
                     'include css': yes
                     sourcemap:
@@ -82,14 +87,15 @@ module.exports = (grunt) ->
         jade:
             dist:
                 files:
-                    'target/public_html/index.html': 'src/templates/app.jade'
+                    '<%= target_dir %>/index.html': '<%= src_dir %>/templates/app.jade'
                 options:
                     data:
                         debug: no
+                        version: '<%= gitinfo.local.branch.current.shortSHA %>'
 
             debug:
                 files:
-                    'target/public_html/index.html': 'src/templates/app.jade'
+                    '<%= target_dir %>/index.html': '<%= src_dir %>/templates/app.jade'
                 options:
                     data:
                         debug: yes
@@ -97,14 +103,14 @@ module.exports = (grunt) ->
         uglify:
             dist:
                 files:
-                    'target/public_html/app.js': ['target/public_html/app.js']
+                    '<%= target_dir %>/app.js': ['<%= target_dir %>/app.js']
                 options:
                     mangle: no
 
         cssmin:
             dist:
                 files:
-                    'target/public_html/app.css': ['target/public_html/app.css']
+                    '<%= target_dir %>/app.css': ['<%= target_dir %>/app.css']
                 options:
                     keepSpecialComments: 0
 
@@ -115,7 +121,7 @@ module.exports = (grunt) ->
                         expand: yes
                         cwd: 'resources'
                         src: ['**']
-                        dest: 'target/public_html/'
+                        dest: '<%= target_dir %>/'
                     }
                 ]
 
@@ -125,36 +131,36 @@ module.exports = (grunt) ->
                         expand: yes
                         cwd: 'bower_components/font-awesome'
                         src: ['fonts/**']
-                        dest: 'target/public_html/'
+                        dest: '<%= target_dir %>/'
                     }
                 ]
 
         clean:
-            target: ['target/public_html/*']
+            target: ['<%= target_dir %>/*']
 
         connect:
             serve:
                 options:
-                    base: 'target/public_html'
+                    base: '<%= target_dir %>'
                     keepalive: yes
                     livereload: no
 
             debug:
                 options:
-                    base: 'target/public_html'
+                    base: '<%= target_dir %>'
                     livereload: yes
 
         watch:
             app:
-                files: ['src/templates/app.jade']
+                files: ['<%= src_dir %>/templates/app.jade']
                 tasks: ['jade:debug']
 
             jade:
-                files: ['src/templates/**/*.jade', '!src/templates/app.jade']
+                files: ['<%= src_dir %>/templates/**/*.jade', '!<%= src_dir %>/templates/app.jade']
                 tasks: ['browserify:debug']
 
             stylus:
-                files: ['src/styles/**/*.styl']
+                files: ['<%= src_dir %>/styles/**/*.styl']
                 tasks: ['stylus:debug']
 
             stylus_libs:
@@ -162,7 +168,7 @@ module.exports = (grunt) ->
                 tasks: ['stylus:libs']
 
             coffee:
-                files: ['src/scripts/**/*.coffee']
+                files: ['<%= src_dir %>/scripts/**/*.coffee']
                 tasks: ['browserify:debug']
 
             options:
@@ -195,12 +201,13 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-connect'
     grunt.loadNpmTasks 'grunt-contrib-watch'
     grunt.loadNpmTasks 'grunt-ftp-push'
+    grunt.loadNpmTasks 'grunt-gitinfo'
 
-    grunt.registerTask 'debug:prepare', ['clean', 'copy', 'browserify:libs', 'stylus:libs']
+    grunt.registerTask 'debug:prepare', ['gitinfo', 'clean', 'copy', 'browserify:libs', 'stylus:libs']
     grunt.registerTask 'debug:build', ['browserify:debug', 'jade:debug', 'stylus:debug']
     grunt.registerTask 'livereload', ['debug:prepare', 'debug:build', 'connect:debug', 'watch']
 
-    grunt.registerTask 'build', ['coffeelint', 'clean', 'browserify:dist', 'stylus:dist', 'jade:dist']
+    grunt.registerTask 'build', ['gitinfo', 'coffeelint', 'clean', 'browserify:dist', 'stylus:dist', 'jade:dist']
     grunt.registerTask 'minify', ['uglify', 'cssmin']
     grunt.registerTask 'default', ['build', 'minify', 'copy']
 

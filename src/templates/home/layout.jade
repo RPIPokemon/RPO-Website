@@ -16,4 +16,16 @@ div(ui-view='navbar')
                             a(ui-sref='app', ng-click='navbarCollapsed=true') Link
                         
 .home-wrapper(ui-view='content')
-    
+
+footer.home-footer
+    .container-fluid
+        .row
+            .col-xs-4.footer-col
+                a(href='mailto:etzinj@rpi.edu') Justin Etzine - President
+                br
+                a(href='mailto:kolskd@rpi.edu') David Koloski - Vice President
+                br
+                a(href='mailto:delanr3@rpi.edu') Ryan Delaney - Webmaster
+                
+            .col-xs-4.footer-col
+                img(src='/img/logo_white.png' height='100')
