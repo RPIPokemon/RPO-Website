@@ -10,11 +10,11 @@
 .home-background
     height calc(100vh - 50px)
     background-image url('img/campus_skyview.jpg')
+    background-size cover
 
 .home-banner
-    // padding-top 3vh
+    padding 3vh 0
     margin-top 20vh
-    padding-top 5vh
     min-hight 500px
     text-align center
     background-color rgba(RPO_blue, .75)
@@ -26,11 +26,15 @@
     background-color RPO_blue
     margin-top 20px
 
-    a
+    a, p
         color RPO_white
 
     .footer-col
         padding 10px
+
+.important
+    text-align center
+    font-weight 700
 
 // categories on home page
 .category-box
@@ -44,3 +48,32 @@
 
     .category-title, p
         color RPO_white
+
+.sub-category
+    padding 0 10%
+    text-align center
+
+.events
+    // padding 0 30%
+    display block
+    margin-right auto
+    margin-left auto
+    max-width 800px
+
+    .events-title
+        text-align center
+
+.event
+    padding-bottom 10px
+
+    .event-image
+        display block
+        margin-left auto
+        margin-right auto
+        width 80%
+        max-width 20vw
+        background-color darken(RPO_grey, 50%)
+        border 10px solid RPO_white
+
+    .event-description
+        text-align center

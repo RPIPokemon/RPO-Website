@@ -1,11 +1,11 @@
 {
   "name": "RPO-Website",
   "author": "Ryan Delaney",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Website for RPO",
   "private": true,
   "devDependencies": {
-    "browserify-plain-jade": "^0.2.2",
+    "browserify-plain-jade": "rrdelaney/browserify-plain-jade#master",
     "coffeeify": "^1.0.0",
     "debowerify": "^1.2.0",
     "grunt": "^0.4.5",
@@ -19,7 +19,7 @@
     "grunt-contrib-stylus": "^0.21.0",
     "grunt-contrib-uglify": "^0.8.0",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-ftp-push": "^0.3.2",
+    "grunt-ftp-deploy": "^0.1.10",
     "grunt-gitinfo": "^0.1.7"
   }
 }

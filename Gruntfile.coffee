@@ -10,6 +10,9 @@ css_depenencies = [
     './src/styles/raleway.styl'
 ]
 
+jade_variables =
+
+
 module.exports = (grunt) ->
     grunt.initConfig
         pkg: grunt.file.readJSON 'package.json'
@@ -22,7 +25,11 @@ module.exports = (grunt) ->
                 files:
                     '<%= target_dir %>/app.js': ['<%= src_dir %>/scripts/app.coffee']
                 options:
-                    transform: ['coffeeify', 'debowerify', 'browserify-plain-jade']
+                    transform: ['coffeeify', 'debowerify', ['browserify-plain-jade',
+                        build: '<%= gitinfo.local.branch.current.shortSHA %>'
+                        version: '<%= pkg.version %>'
+                        __debug: false
+                    ]]
                     browserifyOptions:
                         extensions: ['.coffee']
 
@@ -30,7 +37,11 @@ module.exports = (grunt) ->
                 files:
                     '<%= target_dir %>/app.js': ['<%= src_dir %>/scripts/app.coffee']
                 options:
-                    transform: ['coffeeify', 'browserify-plain-jade']
+                    transform: ['coffeeify', ['browserify-plain-jade',
+                        build: '<%= gitinfo.local.branch.current.shortSHA %>'
+                        version: '<%= pkg.version %>'
+                        __debug: false
+                    ]]
                     external: js_dependencies
                     browserifyOptions:
                         extensions: ['.coffee']
@@ -153,11 +164,11 @@ module.exports = (grunt) ->
         watch:
             app:
                 files: ['<%= src_dir %>/templates/app.jade']
-                tasks: ['jade:debug']
+                tasks: ['gitinfo', 'jade:debug']
 
             jade:
                 files: ['<%= src_dir %>/templates/**/*.jade', '!<%= src_dir %>/templates/app.jade']
-                tasks: ['browserify:debug']
+                tasks: ['gitinfo', 'browserify:debug']
 
             stylus:
                 files: ['<%= src_dir %>/styles/**/*.styl']
@@ -174,21 +185,15 @@ module.exports = (grunt) ->
             options:
                 livereload: true
 
-        ftp_push:
-            deploy:
-                files: [
-                    {
-                        expand: yes
-                        cwd: 'target'
-                        src: ['public_html/**']
-                    }
-                ]
+        'ftp-deploy':
+            union:
+                auth:
+                    host: 'ftp.union.rpi.edu'
+                    port: 21
+                    authKey: 'union'
 
-                options:
-                    host: process.env.FTP_HOST
-                    dest: '/'
-                    username: process.env.FTP_USERNAME
-                    password: process.env.FTP_PASSWORD
+                src: 'target/public_html'
+                dest: 'public_html'
 
     grunt.loadNpmTasks 'grunt-browserify'
     grunt.loadNpmTasks 'grunt-coffeelint'
@@ -200,7 +205,7 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-clean'
     grunt.loadNpmTasks 'grunt-contrib-connect'
     grunt.loadNpmTasks 'grunt-contrib-watch'
-    grunt.loadNpmTasks 'grunt-ftp-push'
+    grunt.loadNpmTasks 'grunt-ftp-deploy'
     grunt.loadNpmTasks 'grunt-gitinfo'
 
     grunt.registerTask 'debug:prepare', ['gitinfo', 'clean', 'copy', 'browserify:libs', 'stylus:libs']
@@ -210,5 +215,7 @@ module.exports = (grunt) ->
     grunt.registerTask 'build', ['gitinfo', 'coffeelint', 'clean', 'browserify:dist', 'stylus:dist', 'jade:dist']
     grunt.registerTask 'minify', ['uglify', 'cssmin']
     grunt.registerTask 'default', ['build', 'minify', 'copy']
+
+    grunt.registerTask 'deploy', ['default', 'ftp-deploy:union']
 
     return

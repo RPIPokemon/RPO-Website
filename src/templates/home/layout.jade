@@ -8,7 +8,7 @@ div(ui-view='navbar')
                 a.navbar-brand(ui-sref='home.index', ng-click='navbarCollapsed=true') RPO
                 
             .collapse.navbar-collapse(collapse='navbarCollapsed')
-                div(ui-view='navbar-buttons')
+                //- div(ui-view='navbar-buttons')
                     ul.nav.navbar-nav
                         li        
                             a(ui-sref='home.blog', ng-click='navbarCollapsed=true') Blog
@@ -20,12 +20,27 @@ div(ui-view='navbar')
 footer.home-footer
     .container-fluid
         .row
-            .col-xs-4.footer-col
-                a(href='mailto:etzinj@rpi.edu') Justin Etzine - President
+            .col-md-4.footer-col
+                a(href='mailto:delanr3@rpi.edu') Ryan Delaney - President
                 br
                 a(href='mailto:kolskd@rpi.edu') David Koloski - Vice President
                 br
-                a(href='mailto:delanr3@rpi.edu') Ryan Delaney - Webmaster
+                a(href='mailto:etzinj@rpi.edu') Justin Etzine - Treasurer
                 
-            .col-xs-4.footer-col
-                img(src='/img/logo_white.png' height='100')
+            .col-md-4.footer-col
+                a(href='http://fb.com/RPIPokemon') 
+                    i.fa.fa-lg.fa-facebook.fa-inverse
+                    | &nbsp; Facebook
+                
+                br
+                a(href='http://twitter.com/RPIPokemon')
+                    i.fa.fa-lg.fa-twitter.fa-inverse
+                    | &nbsp; Twitter
+                    
+                br
+                a(href='http://github.com/rrdelaney/RPO-Website')
+                    i.fa.fa-lg.fa-github.fa-inverse
+                    | &nbsp; Source Code
+                
+            .col-md-4.footer-col
+                p Version - #{version} &nbsp; Build - #{build}

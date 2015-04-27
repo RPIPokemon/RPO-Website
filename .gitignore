@@ -13,3 +13,6 @@ target/
 
 # windows
 */Thumbs.db
+
+# FTP access
+.ftppass
