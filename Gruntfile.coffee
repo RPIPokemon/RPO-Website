@@ -28,7 +28,7 @@ module.exports = (grunt) ->
                     transform: ['coffeeify', 'debowerify', ['browserify-plain-jade',
                         build: '<%= gitinfo.local.branch.current.shortSHA %>'
                         version: '<%= pkg.version %>'
-                        __debug: false
+                        __debug: no
                     ]]
                     browserifyOptions:
                         extensions: ['.coffee']
@@ -40,12 +40,12 @@ module.exports = (grunt) ->
                     transform: ['coffeeify', ['browserify-plain-jade',
                         build: '<%= gitinfo.local.branch.current.shortSHA %>'
                         version: '<%= pkg.version %>'
-                        __debug: false
+                        __debug: no
                     ]]
                     external: js_dependencies
                     browserifyOptions:
                         extensions: ['.coffee']
-                        debug: true
+                        debug: yes
 
             libs:
                 dest: '<%= target_dir %>/libs.js'
@@ -53,7 +53,7 @@ module.exports = (grunt) ->
                 options:
                     require: js_dependencies
                     browserifyOptions:
-                        debug: true
+                        debug: yes
 
         coffeelint:
             dist: ['<%= src_dir %>/scripts/**/*.coffee']
@@ -102,7 +102,8 @@ module.exports = (grunt) ->
                 options:
                     data:
                         debug: no
-                        version: '<%= gitinfo.local.branch.current.shortSHA %>'
+                        version: '<%= pkg.version %>'
+                        build: '<%= gitinfo.local.branch.current.shortSHA %>'
 
             debug:
                 files:
@@ -110,6 +111,8 @@ module.exports = (grunt) ->
                 options:
                     data:
                         debug: yes
+                        version: '<%= pkg.version %>'
+                        build: '<%= gitinfo.local.branch.current.shortSHA %>'
 
         uglify:
             dist:
