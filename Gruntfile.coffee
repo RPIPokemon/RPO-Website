@@ -2,6 +2,7 @@ js_dependencies = [
     './bower_components/angular-bootstrap/ui-bootstrap-tpls.js:angular-bootstrap'
     './bower_components/angular-parallax/scripts/angular-parallax.js:angular-parallax'
     './bower_components/angular-ui-router/release/angular-ui-router.js:angular-ui-router'
+    './bower_components/isMobile/isMobile.js:isMobile'
 ]
 
 module.exports = (grunt) ->

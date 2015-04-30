@@ -23,6 +23,7 @@ angular.module 'RPO', ['RPO.controllers'
         views:
             content:
                 template: require '../templates/home/home.jade'
+                controller: 'HomeCtrl'
 
     .state 'home.blog',
         url: '/blog'

@@ -8,6 +8,7 @@
     "angular-bootstrap": "~0.12.1",
     "font-awesome": "~4.3.0",
     "bootstrap-stylus": "~4.0.3",
-    "angular-parallax": "~0.0.1"
+    "angular-parallax": "~0.0.1",
+    "isMobile": "~0.3.6"
   }
 }
