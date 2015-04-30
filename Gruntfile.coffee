@@ -10,14 +10,13 @@ css_depenencies = [
     './src/styles/raleway.styl'
 ]
 
-jade_variables =
-
-
 module.exports = (grunt) ->
     grunt.initConfig
         pkg: grunt.file.readJSON 'package.json'
         src_dir: 'src'
         target_dir: 'target/public_html'
+        resrc_dir: 'resources'
+        img_dir: 'img'
         gitinfo: {}
 
         browserify:
@@ -129,15 +128,26 @@ module.exports = (grunt) ->
                     keepSpecialComments: 0
 
         copy:
-            src:
+            resrc:
                 files: [
                     {
                         expand: yes
-                        cwd: 'resources'
+                        cwd: '<%= resrc_dir %>'
                         src: ['**']
                         dest: '<%= target_dir %>/'
                     }
                 ]
+
+            dist:
+                files: [
+                    {
+                        expand: yes
+                        cwd: '<%= resrc_dir %>'
+                        src: ['**', '!<%= img_dir %>/**']
+                        dest: '<%= target_dir %>/'
+                    }
+                ]
+
 
             fa:
                 files: [
@@ -146,6 +156,17 @@ module.exports = (grunt) ->
                         cwd: 'bower_components/font-awesome'
                         src: ['fonts/**']
                         dest: '<%= target_dir %>/'
+                    }
+                ]
+
+        imagemin:
+            dist:
+                files: [
+                    {
+                        expand: yes
+                        cwd: '<%= resrc_dir %>'
+                        src: ['<%= img_dir %>/**/*.{png,jpg,gif}']
+                        dest: '<%= target_dir %>'
                     }
                 ]
 
@@ -207,17 +228,18 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-copy'
     grunt.loadNpmTasks 'grunt-contrib-clean'
     grunt.loadNpmTasks 'grunt-contrib-connect'
+    grunt.loadNpmTasks 'grunt-contrib-imagemin'
     grunt.loadNpmTasks 'grunt-contrib-watch'
     grunt.loadNpmTasks 'grunt-ftp-deploy'
     grunt.loadNpmTasks 'grunt-gitinfo'
 
-    grunt.registerTask 'debug:prepare', ['gitinfo', 'clean', 'copy', 'browserify:libs', 'stylus:libs']
+    grunt.registerTask 'debug:prepare', ['gitinfo', 'clean', 'copy:resrc', 'copy:fa', 'browserify:libs', 'stylus:libs']
     grunt.registerTask 'debug:build', ['browserify:debug', 'jade:debug', 'stylus:debug']
     grunt.registerTask 'livereload', ['debug:prepare', 'debug:build', 'connect:debug', 'watch']
 
     grunt.registerTask 'build', ['gitinfo', 'coffeelint', 'clean', 'browserify:dist', 'stylus:dist', 'jade:dist']
-    grunt.registerTask 'minify', ['uglify', 'cssmin']
-    grunt.registerTask 'default', ['build', 'minify', 'copy']
+    grunt.registerTask 'minify', ['uglify', 'cssmin', 'imagemin']
+    grunt.registerTask 'default', ['build', 'minify', 'copy:dist', 'copy:fa']
 
     grunt.registerTask 'deploy', ['default', 'ftp-deploy:union']
 
