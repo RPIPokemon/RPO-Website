@@ -5,7 +5,9 @@
   "description": "Website for RPO",
   "private": true,
   "devDependencies": {
+    "browserify": "^9.0.8",
     "browserify-plain-jade": "rrdelaney/browserify-plain-jade#master",
+    "browserify-shim": "^3.8.5",
     "coffeeify": "^1.0.0",
     "debowerify": "^1.2.0",
     "grunt": "^0.4.5",
@@ -21,6 +23,13 @@
     "grunt-contrib-uglify": "^0.8.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-ftp-deploy": "^0.1.10",
-    "grunt-gitinfo": "^0.1.7"
+    "grunt-gitinfo": "^0.1.7",
+    "time-grunt": "^1.1.1"
+  },
+  "browser": {
+    "angular": "./bower_components/angular/angular.js"
+  },
+  "browserify-shim": {
+    "angular": "angular"
   }
 }

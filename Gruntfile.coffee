@@ -1,16 +1,12 @@
 js_dependencies = [
-    './bower_components/angular/angular.js:angular'
     './bower_components/angular-bootstrap/ui-bootstrap-tpls.js:angular-bootstrap'
     './bower_components/angular-parallax/scripts/angular-parallax.js:angular-parallax'
     './bower_components/angular-ui-router/release/angular-ui-router.js:angular-ui-router'
 ]
 
-css_depenencies = [
-    './src/styles/bootstrap.styl'
-    './src/styles/raleway.styl'
-]
-
 module.exports = (grunt) ->
+    require('time-grunt')(grunt)
+
     grunt.initConfig
         pkg: grunt.file.readJSON 'package.json'
         src_dir: 'src'
@@ -24,7 +20,7 @@ module.exports = (grunt) ->
                 files:
                     '<%= target_dir %>/app.js': ['<%= src_dir %>/scripts/app.coffee']
                 options:
-                    transform: ['coffeeify', 'debowerify', ['browserify-plain-jade',
+                    transform: ['coffeeify', 'browserify-shim', 'debowerify', ['browserify-plain-jade',
                         build: '<%= gitinfo.local.branch.current.shortSHA %>'
                         version: '<%= pkg.version %>'
                         __debug: no
@@ -36,7 +32,7 @@ module.exports = (grunt) ->
                 files:
                     '<%= target_dir %>/app.js': ['<%= src_dir %>/scripts/app.coffee']
                 options:
-                    transform: ['coffeeify', ['browserify-plain-jade',
+                    transform: ['coffeeify', 'browserify-shim', ['browserify-plain-jade',
                         build: '<%= gitinfo.local.branch.current.shortSHA %>'
                         version: '<%= pkg.version %>'
                         __debug: no
@@ -50,6 +46,7 @@ module.exports = (grunt) ->
                 dest: '<%= target_dir %>/libs.js'
                 src: []
                 options:
+                    transform: ['browserify-shim']
                     require: js_dependencies
                     browserifyOptions:
                         debug: yes
@@ -86,7 +83,7 @@ module.exports = (grunt) ->
 
             libs:
                 dest: '<%= target_dir %>/libs.css'
-                src: css_depenencies
+                src: ['src/styles/libs/index.styl']
                 options:
                     paths: ['bower_components', 'node_modules', '<%= src_dir %>/styles']
                     compress: no
@@ -199,7 +196,7 @@ module.exports = (grunt) ->
                 tasks: ['stylus:debug']
 
             stylus_libs:
-                files: css_depenencies
+                files: ['<%= src_dir %>/styles/libs/**/*.styl']
                 tasks: ['stylus:libs']
 
             coffee:
