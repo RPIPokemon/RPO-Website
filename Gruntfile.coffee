@@ -214,7 +214,7 @@ module.exports = (grunt) ->
                     port: 21
                     authKey: 'union'
 
-                src: 'target/public_html'
+                src: '<%= src_dir %>/public_html'
                 dest: 'public_html'
 
     grunt.loadNpmTasks 'grunt-browserify'
@@ -230,6 +230,7 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-watch'
     grunt.loadNpmTasks 'grunt-ftp-deploy'
     grunt.loadNpmTasks 'grunt-gitinfo'
+    grunt.loadNpmTasks 'grunt-notify'
 
     grunt.registerTask 'debug:prepare', ['gitinfo', 'clean', 'copy:resrc', 'copy:fa', 'browserify:libs', 'stylus:libs']
     grunt.registerTask 'debug:build', ['browserify:debug', 'jade:debug', 'stylus:debug']
