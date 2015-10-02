@@ -7,7 +7,7 @@
         $year = $date['year'];
         $rcs = $_POST['rcs'];
 
-        file_put_contents("attendence-$month-$day-$year.txt", "$rcs\n", FILE_APPEND);
+        file_put_contents("attendance-$month-$day-$year.txt", "$rcs\n", FILE_APPEND);
         $added = true;
     } else {
         $added = false;
@@ -43,7 +43,7 @@
                 <div class="panel-body">
                     <form method="post">
                         <div class="form-group">
-                            <label for="rcs">RCS ID</label>
+                            <label for="rcs">RCS ID (e.g. smithj4)</label>
                             <input type="text" class="form-control" name="rcs">
                         </div>
                         <button type="submit" class="btn btn-primary">Sign In!</button>
