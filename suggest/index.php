@@ -1,8 +1,9 @@
 <?php
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $topic = $_POST['topic'];
         $suggest = $_POST['suggest'];
 
-        file_put_contents("suggestions.txt", "$suggest\n", FILE_APPEND);
+        file_put_contents("suggestions.txt", "$topic: $suggest\n", FILE_APPEND);
         $added = true;
     } else {
         $added = false;
@@ -39,8 +40,12 @@
                 <div class="panel-body">
                     <form method="post">
                         <div class="form-group">
+                            <label for="topic">Topic</label>
+                            <input type="text" class="form-control" name="topic">
+                        </div>
+                        <div class="form-group">
                             <label for="suggest">Suggest Something!</label>
-                            <input type="text" class="form-control" name="sugget">
+                            <input type="text" class="form-control" name="suggest">
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
